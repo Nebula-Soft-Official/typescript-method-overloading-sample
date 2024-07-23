@@ -15,15 +15,18 @@ class Child extends Parent {
   get(...args: any[]) {
     if (args.length == 1) {
       super.get(args[0])
+      // this.get(args[0]) // RangeError: Maximum call stack size exceeded
     }
 
     if (args.length == 2) {
       // Child
       this._get(args[0], args[1])
-      // this.get(args[0], args[1]) // RangeError: Maximum call stack size exceeded
 
       // Parent
       this.getTwo(args[0], args[1])
+
+      // Overloading
+      // this.get(args[0], args[1]) // RangeError: Maximum call stack size exceeded
     }
 
     if (args.length == 3) {

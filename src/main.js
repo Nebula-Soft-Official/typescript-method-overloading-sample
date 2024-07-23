@@ -20,7 +20,7 @@ var Parent = /** @class */ (function () {
         console.log('Parent', foo);
     };
     Parent.prototype.getTwo = function (foo, bar) {
-        console.log('Parent', foo, bar);
+        console.log('Parent get two', foo, bar);
     };
     return Parent;
 }());
@@ -36,13 +36,15 @@ var Child = /** @class */ (function (_super) {
         }
         if (args.length == 1) {
             _super.prototype.get.call(this, args[0]);
+            // this.get(args[0]) // RangeError: Maximum call stack size exceeded
         }
         if (args.length == 2) {
             // Child
             this._get(args[0], args[1]);
-            // this.get(args[0], args[1]) // RangeError: Maximum call stack size exceeded
             // Parent
             this.getTwo(args[0], args[1]);
+            // Overloading
+            // this.get(args[0], args[1]) // RangeError: Maximum call stack size exceeded
         }
         if (args.length == 3) {
             console.log('Child get three', args[0], args[1], args[2]);
