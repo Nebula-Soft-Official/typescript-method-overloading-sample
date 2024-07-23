@@ -1,0 +1,13 @@
+{
+  "name": "TypeScript Method Overloading Sample",
+  "private": false,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "tsc ./src/main.ts && node ./src/main.js"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2",
+    "vite": "^5.3.4"
+  }
+}
