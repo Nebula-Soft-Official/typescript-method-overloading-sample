@@ -1,36 +1,24 @@
 class Parent {
-  get(foo: number) {
-    console.log('Parent', foo)
-  }
-
-  getTwo(foo: number, bar: number) {
-    console.log('Parent get two', foo, bar)
+  get(foo: number): void
+  get(foo: string): void
+  get(foo: number | string) {
+    if (typeof foo === 'number') {
+      console.log('Parent number', foo)
+    } else if (typeof foo === 'string') {
+      console.log('Parent string', foo)
+    }
   }
 }
 
 class Child extends Parent {
   get(foo: number): void
+  get(foo: string): void
   get(foo: number, bar: number): void
-  get(foo: number, bar: number, temp: number): void
   get(...args: any[]) {
-    if (args.length == 1) {
+    if (args.length === 1) {
       super.get(args[0])
-      // this.get(args[0]) // RangeError: Maximum call stack size exceeded
-    }
-
-    if (args.length == 2) {
-      // Child
+    } else if (args.length === 2) {
       this._get(args[0], args[1])
-
-      // Parent
-      this.getTwo(args[0], args[1])
-
-      // Overloading
-      // this.get(args[0], args[1]) // RangeError: Maximum call stack size exceeded
-    }
-
-    if (args.length == 3) {
-      console.log('Child get three', args[0], args[1], args[2])
     }
   }
 
@@ -42,5 +30,4 @@ class Child extends Parent {
 const app = new Child()
 
 app.get(0)
-app.get(0, 1)
-app.get(0, 1, 2)
+app.get('string')

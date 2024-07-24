@@ -17,10 +17,12 @@ var Parent = /** @class */ (function () {
     function Parent() {
     }
     Parent.prototype.get = function (foo) {
-        console.log('Parent', foo);
-    };
-    Parent.prototype.getTwo = function (foo, bar) {
-        console.log('Parent get two', foo, bar);
+        if (typeof foo === 'number') {
+            console.log('Parent number', foo);
+        }
+        else if (typeof foo === 'string') {
+            console.log('Parent string', foo);
+        }
     };
     return Parent;
 }());
@@ -34,20 +36,11 @@ var Child = /** @class */ (function (_super) {
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
         }
-        if (args.length == 1) {
+        if (args.length === 1) {
             _super.prototype.get.call(this, args[0]);
-            // this.get(args[0]) // RangeError: Maximum call stack size exceeded
         }
-        if (args.length == 2) {
-            // Child
-            this._get(args[0], args[1]);
-            // Parent
-            this.getTwo(args[0], args[1]);
-            // Overloading
-            // this.get(args[0], args[1]) // RangeError: Maximum call stack size exceeded
-        }
-        if (args.length == 3) {
-            console.log('Child get three', args[0], args[1], args[2]);
+        else if (args.length === 2) {
+            _super.prototype.get.call(this, args[0]);
         }
     };
     Child.prototype._get = function (foo, bar) {
@@ -57,5 +50,4 @@ var Child = /** @class */ (function (_super) {
 }(Parent));
 var app = new Child();
 app.get(0);
-app.get(0, 1);
-app.get(0, 1, 2);
+app.get('string');
