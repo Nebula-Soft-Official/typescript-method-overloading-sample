@@ -16,11 +16,8 @@ var __extends = (this && this.__extends) || (function () {
 var Parent = /** @class */ (function () {
     function Parent() {
     }
-    Parent.prototype.get = function (foo) {
-        console.log('Parent', foo);
-    };
-    Parent.prototype.getTwo = function (foo, bar) {
-        console.log('Parent get two', foo, bar);
+    Parent.prototype.setComboBox = function (foo, bar) {
+        console.log('Parent', foo, bar);
     };
     return Parent;
 }());
@@ -29,33 +26,32 @@ var Child = /** @class */ (function (_super) {
     function Child() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Child.prototype.get = function () {
+    Child.prototype.print = function () {
+        this.setComboBox(0);
+    };
+    Child.prototype.setComboBox = function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
         }
         if (args.length == 1) {
-            _super.prototype.get.call(this, args[0]);
-            // this.get(args[0]) // RangeError: Maximum call stack size exceeded
+            return this.__setComboBox(args[0]);
         }
-        if (args.length == 2) {
-            // Child
-            this._get(args[0], args[1]);
-            // Parent
-            this.getTwo(args[0], args[1]);
-            // Overloading
-            // this.get(args[0], args[1]) // RangeError: Maximum call stack size exceeded
+        else if (args.length == 2) {
+            return _super.prototype.setComboBox.call(this, args[0], args[1]);
         }
-        if (args.length == 3) {
-            console.log('Child get three', args[0], args[1], args[2]);
+        else {
+            throw new Error('[error]');
         }
     };
-    Child.prototype._get = function (foo, bar) {
-        console.log('Child get two', foo, bar);
+    Child.prototype.__setComboBox = function (foo) {
+        console.log('=== Child');
+        // this.setComboBox(foo)
+        this.setComboBox(foo, 3);
+        console.log('===');
     };
     return Child;
 }(Parent));
 var app = new Child();
-app.get(0);
-app.get(0, 1);
-app.get(0, 1, 2);
+app.print();
+// app.print.call({})

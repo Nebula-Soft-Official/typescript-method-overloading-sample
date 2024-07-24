@@ -1,46 +1,41 @@
 class Parent {
-  get(foo: number) {
-    console.log('Parent', foo)
-  }
-
-  getTwo(foo: number, bar: number) {
-    console.log('Parent get two', foo, bar)
+  setComboBox(foo: number, bar: number) {
+    console.log('Parent', foo, bar)
   }
 }
 
 class Child extends Parent {
-  get(foo: number): void
-  get(foo: number, bar: number): void
-  get(foo: number, bar: number, temp: number): void
-  get(...args: any[]) {
+  print() {
+    this.setComboBox(0)
+  }
+
+  setComboBox(foo: number): void
+  setComboBox(foo: number, bar: number): void
+  setComboBox(...args: any[]): void {
     if (args.length == 1) {
-      super.get(args[0])
-      // this.get(args[0]) // RangeError: Maximum call stack size exceeded
-    }
-
-    if (args.length == 2) {
-      // Child
-      this._get(args[0], args[1])
-
-      // Parent
-      this.getTwo(args[0], args[1])
-
-      // Overloading
-      // this.get(args[0], args[1]) // RangeError: Maximum call stack size exceeded
-    }
-
-    if (args.length == 3) {
-      console.log('Child get three', args[0], args[1], args[2])
+      return this.__setComboBox(args[0])
+    } else if (args.length == 2) {
+      return super.setComboBox(args[0], args[1])
+    } else {
+      throw new Error('[error]')
     }
   }
 
-  _get(foo: number, bar: number) {
-    console.log('Child get two', foo, bar)
+  __setComboBox(foo: number) {
+    console.log('=== Child')
+
+    // 堆栈溢出
+    // this.setComboBox(foo)
+
+    this.setComboBox(foo, 3)
+
+    console.log('===')
   }
 }
 
 const app = new Child()
 
-app.get(0)
-app.get(0, 1)
-app.get(0, 1, 2)
+app.print()
+
+// 改变 this 指向
+// app.print.call({})
